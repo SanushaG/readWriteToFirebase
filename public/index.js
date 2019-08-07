@@ -13,7 +13,30 @@ firebase.initializeApp(config);
 
 const $$ = Dom7;
 
+var userError = document.getElementById("userError").value;
+var firstName = document.getElementById("firstName").value;
+var lastName = document.getElementById("lastName").value;
+var email = document.getElementById("email").value;
+var userError=document.getElementById("userError");
+var outFirstName = document.getElementById("outFirstName");
+var outLastName = document.getElementById("outLastName");
+var outEmail = document.getElementById("outEmail");
+var accessEndDate = document.getElementById("grant-free");
 
+document.getElementById("search").addEventListener("click", evt=>{
+    evt.preventDefault();
+    firebase.database().ref("user/").orderByChild("email").equalTo(email).on("child_added", function (snapshot) {
+        userError.innerHTML="I tried";
+        outFirstName.innerHTML = snapshot.val().firstName;
+        outLastName.innerHTML = snapshot.val().lastName;
+        outEmail.innerHTML = snapshot.val().email;
+    }).catch(function (error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        
+        console.log(errorCode);
+    });
+})
 
 
 
