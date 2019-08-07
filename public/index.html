@@ -42,8 +42,8 @@ July 12, 2019
 			To:&nbsp;<input class="signUp" type="date" name="toDate"><br><br>
 			<button onclick="window.location.href = '../pages/adminReport.html';" class="userbtn" type="submit" name="submit" id="report">Done</button><br><br>
 		</div>
-		<div class="row">
-			<div class="column">
+		<div>
+			<div>
 			<h3>Grant Free Access</h3>
 				<p id="userError">Error Comes here!!</p>
 			<label for="firstName">First name:</label>
@@ -52,18 +52,18 @@ July 12, 2019
 		<input id="lastName" class="signUp" type="text" placeholder="User LastName" size="40" name="lastName" required><br><br>
 		<label for="email">Email:</label>
 		<input id="email" class="signUp" type="email" placeholder="Enter Email" size="46" name="email" required><br><br>
-		Free access until:<input type="date" name="toDate"><br><br>
+		Free access until:<input type="date" id="date" name="toDate"><br><br>
 
 		<button class="userbtn" type="submit" name="submit" id="search">Search</button><br>
 				</div>
-					   <div class="column">
+					   <div>
 			<h3>User Information</h3>
 		<label for="firstName">First name:</label>
-			<label for="firstName" id="" type="text"></label><br><br>
+			<label for="firstName" id="outFirstName" type="text"></label><br><br>
 		<label for="lastName">Last name:</label>
-			<label for="lastName" id="" type="text"></label><br><br>
+			<label for="lastName" id="outLastName" type="text"></label><br><br>
 		<label for="email">Email:</label>
-		<label for="email" id="" type="email"></label><br><br><br><br>
+		<label for="email" id="outEmail" type="email"></label><br><br><br><br>
 
 		<button class="userbtn" type="submit" name="submit" id="grant-free">Grant Free Access</button><br>
 				<br>

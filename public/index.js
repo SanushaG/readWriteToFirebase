@@ -13,11 +13,11 @@ firebase.initializeApp(config);
 
 const $$ = Dom7;
 
-var userError = document.getElementById("userError").value;
-var firstName = document.getElementById("firstName").value;
-var lastName = document.getElementById("lastName").value;
-var email = document.getElementById("email").value;
-var userError=document.getElementById("userError");
+// var userError = document.getElementById("userError").value;
+// var firstName = document.getElementById("firstName").value;
+// var lastName = document.getElementById("lastName").value;
+// var email = document.getElementById("email").value;
+var userError =document.getElementById("userError");
 var outFirstName = document.getElementById("outFirstName");
 var outLastName = document.getElementById("outLastName");
 var outEmail = document.getElementById("outEmail");
@@ -25,6 +25,12 @@ var accessEndDate = document.getElementById("grant-free");
 
 document.getElementById("search").addEventListener("click", evt=>{
     evt.preventDefault();
+    var email = document.getElementById("email").value;
+ 
+    var firstName = document.getElementById("firstName").value;
+    var lastName = document.getElementById("lastName").value;
+    var date = document.getElementById("date").value;
+    var email = document.getElementById("email").value;
     firebase.database().ref("user/").orderByChild("email").equalTo(email).on("child_added", function (snapshot) {
         userError.innerHTML="I tried";
         outFirstName.innerHTML = snapshot.val().firstName;
@@ -154,23 +160,23 @@ document.getElementById("search").addEventListener("click", evt=>{
     }
 
     //If payment is successful
-    document.getElementById("payPal").addEventListener("click", evt => {
-        const dateReceived = Date.today().toFormat("YYYY-MM-DD");
-        const sUser = firebase.auth().currentUser.uid;
-        firebase.database().ref("user/" + sUser + "/payment/" + dateReceived).set({
-            paymentMethod: "PayPal",
-            verificationCode: "code"
-        }).then(() =>
-            //window.location.replace("../pages/paidUserDash.html");
-            console.log("redirect to dashboard")
-        ).catch(function (error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            document.getElementById("signUpError").innerHTML = "Something went wrong: " + errorCode + errorMessage;
-            console.log("Error:" + errorCode + ". " + errorMessage);
-        });
-    })
+    // document.getElementById("payPal").addEventListener("click", evt => {
+    //     const dateReceived = Date.today().toFormat("YYYY-MM-DD");
+    //     const sUser = firebase.auth().currentUser.uid;
+    //     firebase.database().ref("user/" + sUser + "/payment/" + dateReceived).set({
+    //         paymentMethod: "PayPal",
+    //         verificationCode: "code"
+    //     }).then(() =>
+    //         //window.location.replace("../pages/paidUserDash.html");
+    //         console.log("redirect to dashboard")
+    //     ).catch(function (error) {
+    //         // Handle Errors here.
+    //         var errorCode = error.code;
+    //         var errorMessage = error.message;
+    //         document.getElementById("signUpError").innerHTML = "Something went wrong: " + errorCode + errorMessage;
+    //         console.log("Error:" + errorCode + ". " + errorMessage);
+    //     });
+    // })
 
     //Login
     // document.getElementById("loginSubmit").addEventListener("click", evt => {
