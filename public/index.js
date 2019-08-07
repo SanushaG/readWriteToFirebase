@@ -7,16 +7,57 @@ import config from "./firebase.js";
 import app from "./F7App.js";
 //import "./book.js";
 require("date-utils");
+var moment = require('moment');
 
 firebase.initializeApp(config);
 
 
 const $$ = Dom7;
 
-// var userError = document.getElementById("userError").value;
-// var firstName = document.getElementById("firstName").value;
-// var lastName = document.getElementById("lastName").value;
-// var email = document.getElementById("email").value;
+//Check time since paying 
+document.getElementById("paid-since").addEventListener("click", evt=>{
+    const sUser = firebase.auth().currentUser.uid;
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            firebase.database().ref("user/" + sUser).on("value", (snapshot) => {
+                const data = snapshot.val();
+                var userType = data.userType;
+                switch(userType){
+                    case "admin":
+                        //window.location.replace("../pages/adminDash.html");
+                        console.log("admin")
+                        break;
+                    case "paid":
+                        checkPaidStatus();    
+                    // window.location.replace("../pages/dashboard.html");
+                        break;
+                    case "pending":
+                        console.log("pending");
+                       // window.location.replace("../pages/payment.html");
+                        break;
+                    default: 
+                         document.getElementById("loginError").innerHTML = "Something went wrong.";
+                }
+    
+            });
+        }else{
+            document.getElementById("loginError").innerHTML = "Something went wrong.";
+        }
+    })
+})
+
+
+function checkPaidStatus(){
+    const sUser = firebase.auth().currentUser.uid;
+    firebase.database().ref("user/"+sUser+"/payment").on("child_added", function (data){
+        var lastPayDate=new Date(data.key);
+
+        var months=lastPayDate.getMonthsBetween(Date.now());
+        console.log(months);
+    })
+}
+
+
 var userError =document.getElementById("userError");
 var outFirstName = document.getElementById("outFirstName");
 var outLastName = document.getElementById("outLastName");
@@ -26,7 +67,7 @@ var accessEndDate = document.getElementById("grant-free");
 document.getElementById("search").addEventListener("click", evt=>{
     evt.preventDefault();
     var email = document.getElementById("email").value;
- 
+ var userError = document.getElementById("userError").value;
     var firstName = document.getElementById("firstName").value;
     var lastName = document.getElementById("lastName").value;
     var date = document.getElementById("date").value;
@@ -179,36 +220,36 @@ document.getElementById("search").addEventListener("click", evt=>{
     // })
 
     //Login
-    // document.getElementById("loginSubmit").addEventListener("click", evt => {
-    //     evt.preventDefault();
-    //     const userEmail = document.getElementById("emailUser").value;
-    //     const password = document.getElementById("passwordUser").value;
-    //     if (validateEmail(userEmail) || userEmail != "") {
-    //         if (validatePassword(password) || password != "") {
-    //             firebase.auth().signInWithEmailAndPassword(userEmail, password).then(
-    //                 () => {
-    //                     const sUser = firebase.auth().currentUser.uid;
-    //                     //var  ref = firebase.database().ref("users/");
-    //                     console.log(sUser);
-    //                     // ref.on("value", redirect, errorData);
-    //                     //window.location.replace("../pages/paidUserDash.html");
-    //                 }).catch(function (error) {
-    //                     // Handle Errors here.
-    //                     var errorCode = error.code;
-    //                     var errorMessage = error.message;
-    //                     document.getElementById("loginError").innerHTML = "Something went wrong: " + errorCode + ". " + errorMessage;
-    //                     console.log("Error:" + errorCode + "." + errorMessage);
-    //                 });
-    //         }
-    //         else {
-    //             document.getElementById("loginError").innerHTML = "That password seems too short. Try again";
-    //         }
-    //     }
-    //     else {
-    //         document.getElementById("loginError").innerHTML = "That doesn't look like an email address. Try again!";
-    //     }
+    document.getElementById("loginSubmit").addEventListener("click", evt => {
+        evt.preventDefault();
+        const userEmail = document.getElementById("emailUser").value;
+        const password = document.getElementById("passwordUser").value;
+        if (validateEmail(userEmail) || userEmail != "") {
+            if (validatePassword(password) || password != "") {
+                firebase.auth().signInWithEmailAndPassword(userEmail, password).then(
+                    () => {
+                        const sUser = firebase.auth().currentUser.uid;
+                        //var  ref = firebase.database().ref("users/");
+                        console.log(sUser);
+                        // ref.on("value", redirect, errorData);
+                        //window.location.replace("../pages/paidUserDash.html");
+                    }).catch(function (error) {
+                        // Handle Errors here.
+                        var errorCode = error.code;
+                        var errorMessage = error.message;
+                        document.getElementById("loginError").innerHTML = "Something went wrong: " + errorCode + ". " + errorMessage;
+                        console.log("Error:" + errorCode + "." + errorMessage);
+                    });
+            }
+            else {
+                document.getElementById("loginError").innerHTML = "That password seems too short. Try again";
+            }
+        }
+        else {
+            document.getElementById("loginError").innerHTML = "That doesn't look like an email address. Try again!";
+        }
 
-    // });
+    });
 
     // function redirect(data){
     //     const user =data.val();
